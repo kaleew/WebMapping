@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+   <meta charset='utf-8'/>
+    <title>Energy and Mineral Projects in the United States</title>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+    
+    
+    <style>
+        body { margin:0, padding:0; }
+        #map {position:absolute; top:0; bottom;0; width:100%; height:100vh}
+        #title {z-index: 9999;
+        background-color:azure;
+        opacity: 70%;
+        text-align: center}
+        
+    </style>
+</head>
+
+<body>
+    <div id= 'map'></div>
+    <div id ='title'>
+        <h1>Looming Energy and Mineral Extraction Projects in the United States</h1>
+        <h2>By: Kalee Winterbottom</h2>
+    </div>
+
+    
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoia3dpbnRlcmJvdHRvbSIsImEiOiJjbWF4MXNwaWQwbWVtMmpxMGw3aXlheGYwIn0.GMBa1uSljfVFvOmLBKV3pg'
+        
+    //Map Initialization 
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v11',
+            center: [-98.5833, 39.8333],
+            zoom: 4
+        })
+            //McDermitt Exploration Project - Oregon
+        var marker = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-117.9967, 42.0014])
+            //add popup here 
+            .addTo(map);
+    
+            //Oak Flat copper mine - Arizona
+        var marker2 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-111.047, 33.308])
+            //add popup here
+            .addTo(map);
+    
+            //Stibnite gold mine - Idaho
+        var marker3 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-115.339, 44.898])
+            //add popup here
+            .addTo(map);
+    
+            //Blue Creek Coal mine - Alabama
+        var marker4 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-87.0761, 33.3709]) 
+            //add popup here
+            .addTo(map);
+            
+            //Smackover Lithium project - Arkansas
+        var marker5 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-92.7278, 33.3614])
+            //add popup here
+            .addTo(map);
+    
+    
+    
+    
+    
+    
+    
+    
+    </script>
+    
+    
+    
+</body>
+    
+    
+</html>
