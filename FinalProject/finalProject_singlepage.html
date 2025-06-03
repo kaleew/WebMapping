@@ -1,0 +1,400 @@
+<!-- A Versatile Layout for Full-screen Maps by Andy Cochran
+Andy Cochran 
+From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-maps-229cec508b22 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>US Mineral Projects 2025</title>
+   
+
+    
+    <!-- JavaScript Libraries-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.js"></script>
+    
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+    
+ 
+    <!-- CSS Links -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css" rel="stylesheet" />
+    <link href="VersitileLayout.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+    
+<style>
+    .popup-content{
+        font-family: 'Lucida Sans', sans-serif;
+        font-size: 14pt;
+        line-height: 1.5;
+        color: black;
+    }
+    
+    .popup-content h1,
+    .popup-content h2 {
+        font-family: 'Lucida Sans', sans-serif;
+        font-size: 16pt;
+        margin-top: 0;
+        margin-bottom: 0.5em;
+        color: black;
+    }
+    
+    .popup-content p {
+        font-size: 13pt;
+        margin: 0.5em 0;
+    }
+
+    .popup-content a {
+        color: black;
+        text-decoration: underline;
+    }
+    
+    .sidebar li {
+        list-style: none;
+        margin-bottom: 0.5rem;
+    }
+    
+    .sidebar button.fly{
+        display: block;
+        width: 100%;
+        background-color: cadetblue;
+        border: none;
+        color: aliceblue;
+        padding: 10px 15px;
+        font-size: 1rem;
+        border-radius: 5px;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        font-family: 'Lucida Sans', sans-serif;
+        
+    }
+    .sidebar button.fly:hover {
+        background-color: darkcyan;
+        
+    }
+    
+    .sidebar button.fly:active {
+        background-color: darkslategray;
+    }
+</style>
+
+    
+</head>
+
+<body>
+
+    <div class="site-header">
+        <strong class="site-title">Looming Energy and Mineral Extraction Projects in the United States</strong>
+    </div>
+
+    <div class="site-main grid-x has-content-open">
+
+
+        
+        <div id='map' class="map-container cell medium-auto large-order-2">
+             <!--  ADD iframe here, inside the versitle layout's map container (VI.2.)   -->
+<!--            <iframe src="final_project.html" title="Map"></iframe> -->
+
+        </div>
+
+        <!--  Sidebar panel  -->
+        <div class="sidebar cell medium-3 large-2 large-order-1 show-for-medium">
+            <h5>Projects Identified per EO 14241: "Immediate Measures to Increase American Mineral Production"</h5>
+            <ul>
+            <li><button class='fly' id='marker1Button'>McDermitt Exploration Project</button></li>
+            <li><button class='fly' id='marker2Button'>Resolution Copper</button></li>
+            <li><button class='fly' id='marker3Button'>Stibnite Gold Mine</button></li>
+            <li><button class='fly' id='marker4Button'>Blue Creek Coal Mine</button></li>
+            <li><button class='fly' id='marker5Button'>Smackover Lithium Project</button></li>
+            <li><button class='fly' id='marker6Button'>Schmid Ridge</button></li>
+            <li><button class='fly' id='marker7Button'>Libby Exploration Project</button></li>
+            <li><button class='fly' id='marker8Button'>Lisbon Valley</button></li>
+            <li><button class='fly' id='marker9Button'>Silver Peak Lithium</button></li>
+            <li><button class='fly' id='marker10Button'>Michigan Potash</button></li>
+            </ul>
+            
+
+        </div>
+
+        <div class="content-close-button-container">
+            <a href="#" class="content-close-button">×</a>
+        </div>
+        
+        <!--  Content panel  -->
+        <div class="content cell large-5 large-order-3">
+            <h2>Description</h2>
+            <p>In the first months of Donald Trump's second presidency, he signed over 100 executive orders. Many of these are levers for dismantling the federal government in such a way that serves his personal agenda. Executive Order (EO) 14241: "Immediate Measures to Increase American Mineral Production" completely alters the approach to energy projects and mineral extraction. The purpose of the EO is to fast-track selected projects (identified by Trump's own National Energy Dominance Council). By reframing previous environmental regulations as unnecessary and burdensome, Trump's adminstration can essentially override regulatory barriers and avoid accountability for the impacts of these projects. </p>
+            <br>
+            <p>Rather than prioritizing a commitment to cleaner energy, the Trump administration is setting the industry back significantly. In addition to energy, other extractive mining projects focus on product manufacture, like lithium batteries, for example. Under the guise of creating jobs and shifting priorities from energy renewability to "reliability," this EO sacrifices the health of the environment and climate-susceptible communities in favor of "making American energy dominant" and allegedly reducing reliance on foreign nations.</p>
+            <br>
+            <p>EO 14241 threatens tribal sovereignty, especially in environmental governance and land stewardship. By bypassing much of the assessment process and denying appeals made by Tribal Nations, the National Energy Dominance Council and the federal government have effectively taken Indigenous ecological knowledge out of the equation. These projects have the potential to seriously harm ecosystem functions and populations of people, non-human animals, vegetation, and water supplies. Any small steps that had been made previously, notably by the Biden administration, are on the way to being completely undone by this and similar executive orders. </p>
+            
+        </div>
+
+    </div>
+
+    <script>
+       
+        $(document).ready(function() {
+
+            $('.content-close-button').click(function() {
+                $('.content-close-button').hide();
+                $('.content').hide();
+                $('.site-main').removeClass('has-content-open')
+
+                // When the map is resized programmatically, window resize must be triggered so that the map renders in the newly allotted space.
+                window.dispatchEvent(new Event('resize'));
+
+            });
+
+            $('.content-link').click(function() {
+                $('.content-close-button').show();
+                $('.content').show();
+                $('.site-main').addClass('has-content-open')
+                window.dispatchEvent(new Event('resize'));
+            });
+
+        });
+
+        mapboxgl.accessToken = 'pk.eyJ1Ijoia3dpbnRlcmJvdHRvbSIsImEiOiJjbWF4MXNwaWQwbWVtMmpxMGw3aXlheGYwIn0.GMBa1uSljfVFvOmLBKV3pg'
+        
+    //Map Initialization 
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/outdoors-v11',
+            center: [-98.5833, 39.8333],
+            zoom: 4
+        })
+        
+        //Popups
+            //Mcdermitt
+        var popup_content = `
+            <div class="popup-content">
+            <h1>McDermitt Exploration Project - SE Oregon</h1>
+            <img src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/media/images/SouthRimPanorama.jpg?itok=qSImsujL" 
+                alt="McDermitt Caldera, Southeast Oregon" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <p>Source: USGS / Chris Henry, Nevada Bureau of Mines and Geology, 
+                <a href="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/media/images/SouthRimPanorama.jpg?itok=qSImsujL" target="_blank">View full image</a>
+            </p>
+        </div>
+        `;
+              
+        var popup = new mapboxgl.Popup({maxWidth: '500px'})
+            .setHTML(popup_content);
+        
+            // Oak Flat
+        var popup2_content = `
+            <div class="popup-content">
+            <h1>Resolution Copper - Oak Flat, Arizona</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/EliasButler-OakFlat-2021.jpg/1200px-EliasButler-OakFlat-2021.jpg?20210118182302" 
+                alt="Oak Flat, Arizona" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <p>Source: Wikipedia / Elias Butler, 
+                <a href="https://commons.wikimedia.org/wiki/File:EliasButler-OakFlat-2021.jpg" target="_blank">View license</a>
+            </p>
+        </div>
+        `;
+        
+        var popup2 = new mapboxgl.Popup({maxWidth: '500px'})
+            .setHTML(popup2_content);
+        
+            //Stibnite Gold Mine
+        var popup3_content = `
+            <div class="popup-content">
+            <h1>Stibnite Gold Mine - Idaho</h1>
+            <img src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/Glory_Hole.jpg?itok=wmgduA-a" 
+                alt="Stibnite Mining District, Idaho" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <p>Source: USGS , 
+                <a href="https://www.usgs.gov/media/images/water-quality-study-historical-idaho-mining-district-1" target="_blank">View full image</a>
+            </p>
+        </div>
+        `;
+        var popup3 = new mapboxgl.Popup({maxWidth: '500px'})
+            .setHTML(popup3_content);
+        
+            //Blue Creek Coal Mine
+        var popup4_content = '<h1>Blue Creek Coal Mine - Alabama</h1><br>'
+        
+        var popup4 = new mapboxgl.Popup({minWidth: '300px'})
+            .setHTML(popup4_content);
+        
+            //Smackover Lithium Project - Arkansas
+        var popup5_content = '<h1>Smackover Lithium Project - Arkansas</h1><br>'
+        
+        var popup5 = new mapboxgl.Popup({minWidth: '300px'})
+            .setHTML(popup5_content);
+        
+            //Schmid Ridge Phosphorous Mine - SE Idaho
+        var popup6_content = '<h1>Schmid Ridge Phosphrous Mine - SE Idaho</h1><br>'
+        
+        var popup6 = new mapboxgl.Popup({minWidth: '300px'})
+            .setHTML(popup6_content);
+
+            // Libby Exploration Project 
+        var popup7_content = '<h1>Libby Exploration Project - NW Montana</h1>'
+        
+        var popup7 = new mapboxgl.Popup({minWidth:'300px'})
+            .setHTML(popup7_content);
+        
+            //Lisbon valley copper project
+        var popup8_content = '<h1>Lisbon Valley Copper Project - Utah</h1><br>'
+        
+        var popup8 = new mapboxgl.Popup({minWidth: '300px'})
+            .setHTML(popup8_content);
+        
+            //Silver Peak Lithium Mine
+        var popup9_content = '<h1>Silver Peak Lithium Mine - Nevada</h1><br>'
+        
+        var popup9 = new mapboxgl.Popup({minWidth: '300px'})
+            .setHTML(popup9_content);
+        
+            //Michigan Potash
+        var popup10_content = '<h1>Michigan Potash</h1><br>'
+        
+        var popup10 = new mapboxgl.Popup({minWidth: '300px'})
+            .setHTML(popup10_content);
+        
+        //Markers
+        
+            //McDermitt Exploration Project - Oregon
+        var marker = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-117.9967, 42.0014])
+            .setPopup(popup) 
+            .addTo(map);
+    
+            //Oak Flat copper mine - Arizona
+        var marker2 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-111.047, 33.308])
+            .setPopup(popup2)
+            .addTo(map);
+    
+            //Stibnite gold mine - Idaho
+        var marker3 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-115.339, 44.898])
+            .setPopup(popup3)
+            .addTo(map);
+    
+            //Blue Creek Coal mine - Alabama
+        var marker4 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-87.0761, 33.3709]) 
+            .setPopup(popup4)
+            .addTo(map);
+            
+            //Smackover Lithium project - Arkansas
+        var marker5 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-92.7278, 33.3614])
+            .setPopup(popup5)
+            .addTo(map);
+    
+            //Schmid Ridge Phosphorous Mine - SE Idaho
+        var marker6 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-111.2834, 42.6114])
+            .setPopup(popup6)
+            .addTo(map);
+        
+            //Libby Exploration Project - Montana
+        var marker7 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-115.8303, 48.167])
+            .setPopup(popup7)
+            .addTo(map);
+            
+            //Lisbon Valley Copper Project - Utah
+        var marker8 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-109.2482, 38.3122])
+            .setPopup(popup8)
+            .addTo(map);
+        
+            //Silver Peak Lithium Mine 
+        var marker9 = new mapboxgl.Marker({color:'rosybrown'})
+            .setLngLat([-117.6327, 37.7567])
+            .setPopup(popup9)
+            .addTo(map);
+    
+    
+            //Michigan Potash
+        var marker10 = new mapboxgl.Marker({color: 'rosybrown'})
+            .setLngLat([-85.3431, 43.9973])
+            .setPopup(popup10)
+            .addTo(map);
+        
+        
+    
+       document.getElementById('marker1Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-117.9967, 42.0014], 
+            zoom: 9
+            });
+        });
+    
+        document.getElementById('marker2Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-111.047, 33.308], 
+            zoom: 9
+            });
+        });
+    
+         document.getElementById('marker3Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-115.339, 44.898], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker4Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-87.0761, 33.3709], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker5Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-92.7278, 33.3614], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker6Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-111.2834, 42.6114], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker7Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-115.8303, 48.167], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker8Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-109.2482, 38.3122], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker9Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-117.6327, 37.7567], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker10Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-85.3431, 43.9973], 
+            zoom: 9
+            });
+        });
+    </script>
+
+</body>
+
+</html>
