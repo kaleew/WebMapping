@@ -24,6 +24,7 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
     <link href="VersitileLayout.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
     
+    
 <style>
     .popup-content{
         font-family: 'Lucida Sans', sans-serif;
@@ -79,6 +80,58 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
     .sidebar button.fly:active {
         background-color: darkslategray;
     }
+    
+    body {
+        background-color: #2e4f3e; 
+        color: white;
+        font-family: 'Lucida Sans', sans-serif;
+    }
+    
+    .search-container {
+        background-color: #2e4f3e;
+        color: #fff;
+        padding: 1rem;
+    }
+    
+     .content {
+        background-color: #2e4f3e;
+        color: #e0e0e0;
+        padding: 1rem;
+    }
+   
+
+    .sidebar {
+        background-color: #2e4f3e;
+        color: #ffffff;
+        padding: 1rem;
+        }
+    
+    .site-header {
+        background-color: cadetblue;
+        color: black;
+        text-align: center;
+        font-family: 'Lucida Grande', serif; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80px;
+        padding: 0 20px;
+            
+        }
+    
+    .site-title {
+        font-size: 2rem;
+        margin: 0;
+        color: black;
+    }
+    li:first-child a.content-link {
+        font-weight: bold;
+        color: crimson; 
+        text-decoration: underline;
+        font-size: 14pt;
+        text-shadow:   0 0 3px #ffc0cb;
+    
+        }
 </style>
 
     
@@ -99,11 +152,14 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
 <!--            <iframe src="final_project.html" title="Map"></iframe> -->
 
         </div>
-
+        
+       
+        
         <!--  Sidebar panel  -->
         <div class="sidebar cell medium-3 large-2 large-order-1 show-for-medium">
             <h5>Projects Identified per EO 14241: "Immediate Measures to Increase American Mineral Production"</h5>
             <ul>
+            <li><a class="content-link" href="#">More Information</a></li>
             <li><button class='fly' id='marker1Button'>McDermitt Exploration Project</button></li>
             <li><button class='fly' id='marker2Button'>Resolution Copper</button></li>
             <li><button class='fly' id='marker3Button'>Stibnite Gold Mine</button></li>
@@ -124,7 +180,7 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
         </div>
         
         <!--  Content panel  -->
-        <div class="content cell large-5 large-order-3">
+        <div id= 'contentpanel' class="content cell large-5 large-order-3">
             <h2>Description</h2>
             <p>In the first months of Donald Trump's second presidency, he signed over 100 executive orders. Many of these are levers for dismantling the federal government in such a way that serves his personal agenda. Executive Order (EO) 14241: "Immediate Measures to Increase American Mineral Production" completely alters the approach to energy projects and mineral extraction. The purpose of the EO is to fast-track selected projects (identified by Trump's own National Energy Dominance Council). By reframing previous environmental regulations as unnecessary and burdensome, Trump's adminstration can essentially override regulatory barriers and avoid accountability for the impacts of these projects. </p>
             <br>
@@ -136,6 +192,7 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
 
     </div>
 
+   
     <script>
        
         $(document).ready(function() {
@@ -161,12 +218,14 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
 
         mapboxgl.accessToken = 'pk.eyJ1Ijoia3dpbnRlcmJvdHRvbSIsImEiOiJjbWF4MXNwaWQwbWVtMmpxMGw3aXlheGYwIn0.GMBa1uSljfVFvOmLBKV3pg'
         
+        
+    
     //Map Initialization 
         var map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/outdoors-v11',
-            center: [-98.5833, 39.8333],
-            zoom: 4
+            style: 'mapbox://styles/mapbox/satellite-streets-v12',
+            center: [-99.6033, 39.8333],
+            zoom: 3.5
         })
         
         //Popups
@@ -214,110 +273,180 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
             </p>
         </div>
         `;
-        var popup3 = new mapboxgl.Popup({maxWidth: '500px'})
+        var popup3 = new mapboxgl.Popup({minWidth: '300px'})
             .setHTML(popup3_content);
         
             //Blue Creek Coal Mine
-        var popup4_content = '<h1>Blue Creek Coal Mine - Alabama</h1><br>'
-        
+        var popup4_content = `
+            <div class="popup-content">
+            <h1>Blue Creek Coal Mine - Alabama</h1>
+            <img src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/Glory_Hole.jpg?itok=wmgduA-a" 
+                alt="Stibnite Mining District, Idaho" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <p>Source: USGS , 
+                <a href="https://www.usgs.gov/media/images/water-quality-study-historical-idaho-mining-district-1" target="_blank">View full image</a>
+            </p>
+        </div>
+        `;
+            
         var popup4 = new mapboxgl.Popup({minWidth: '300px'})
             .setHTML(popup4_content);
-        
+                
             //Smackover Lithium Project - Arkansas
-        var popup5_content = '<h1>Smackover Lithium Project - Arkansas</h1><br>'
-        
+        var popup5_content = `
+            <div class="popup-content">
+            <h1>Smackover Lithium Project - SW Arkansas</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Limetal.JPG/1200px-Limetal.JPG?20111220125403" 
+                alt="Lithium" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <p>Source: Wikipedia / User: Dnn87 , 
+                <a href="https://commons.wikimedia.org/wiki/File:Limetal.JPG">View license</a>
+            </p>
+        </div>
+        `;
+            
         var popup5 = new mapboxgl.Popup({minWidth: '300px'})
             .setHTML(popup5_content);
         
             //Schmid Ridge Phosphorous Mine - SE Idaho
-        var popup6_content = '<h1>Schmid Ridge Phosphrous Mine - SE Idaho</h1><br>'
+        var popup6_content = `
+            <div class="popup-content">
+            <h1>Schmid Ridge Phosporous Mine - SE Idaho</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/TaylorMountain_BlackfootRange.jpg/1200px-TaylorMountain_BlackfootRange.jpg?20080703043929" 
+                alt="Blackfoot Mountains, Bingham County, Idaho" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <p>Source: Wikipedia / Zechariah Judy, 
+                <a href="https://commons.wikimedia.org/wiki/File:TaylorMountain_BlackfootRange.jpg">View license</a>
+            </p>
+        </div>
+        `;
         
         var popup6 = new mapboxgl.Popup({minWidth: '300px'})
             .setHTML(popup6_content);
 
             // Libby Exploration Project 
-        var popup7_content = '<h1>Libby Exploration Project - NW Montana</h1>'
-        
+        var popup7_content = `
+            <div class="popup-content">
+            <h1>Libby Exploration Project - NW Montana</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Leigh_Lake_-_Snowshoe_Peak.jpg/960px-Leigh_Lake_-_Snowshoe_Peak.jpg?20200123091237" 
+                alt="Snowshoe Peak - tallest peak in the Cabinet Mountains wilderness" 
+                style="width: 100%; height: 200px; margin-top: 10px;" />
+            <p>Source: English Wikipedia / Kataiklaeya , 
+                <a href="https://commons.wikimedia.org/wiki/File:Leigh_Lake_-_Snowshoe_Peak.jpg" target="_blank">View license</a>
+            </p>
+        </div>
+        `;
+            
         var popup7 = new mapboxgl.Popup({minWidth:'300px'})
             .setHTML(popup7_content);
         
             //Lisbon valley copper project
-        var popup8_content = '<h1>Lisbon Valley Copper Project - Utah</h1><br>'
-        
+        var popup8_content = `
+            <div class="popup-content">
+            <h1>Lisbon Valley Copper Project - Utah</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Shinarump_Mine_Waste_Rock.jpg/1200px-Shinarump_Mine_Waste_Rock.jpg?20200317232952" 
+                alt="Mining waste dump near Moab, Utah" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <p>Source: Wikipedia / User: Forade , 
+                <a href="https://commons.wikimedia.org/wiki/File:Shinarump_Mine_Waste_Rock.jpg" target="_blank">View license</a>
+            </p>
+        </div>
+        `;
+            
         var popup8 = new mapboxgl.Popup({minWidth: '300px'})
             .setHTML(popup8_content);
         
             //Silver Peak Lithium Mine
-        var popup9_content = '<h1>Silver Peak Lithium Mine - Nevada</h1><br>'
-        
+        var popup9_content = `
+            <div class="popup-content">
+            <h1>Silver Peak Lithium Mine - Nevada</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Chemetall_Foote_Lithium_Operation.jpg/1200px-Chemetall_Foote_Lithium_Operation.jpg?20101013004246" 
+                alt="Lithium mining operations - Silver Peak, Nevada" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <p>Source: Wikipedia / Doc Searls , 
+                <a href="https://commons.wikimedia.org/wiki/File:Chemetall_Foote_Lithium_Operation.jpg" target="_blank">View license</a>
+            </p>
+        </div>
+        `;
+            
         var popup9 = new mapboxgl.Popup({minWidth: '300px'})
             .setHTML(popup9_content);
         
             //Michigan Potash
-        var popup10_content = '<h1>Michigan Potash</h1><br>'
-        
+        var popup10_content = `
+            <div class="popup-content">
+            <h1>Michigan Potash</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/PotashUSGOV.jpg?20051002043045" 
+                alt="Processed potash with a US penny for size and color reference" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <p>Source: Wikipedia /USGS, Public Domain 
+                <a href="https://commons.wikimedia.org/wiki/File:PotashUSGOV.jpg="_blank">View info</a>
+            </p>
+        </div>
+        `;
+            
         var popup10 = new mapboxgl.Popup({minWidth: '300px'})
             .setHTML(popup10_content);
         
         //Markers
         
             //McDermitt Exploration Project - Oregon
-        var marker = new mapboxgl.Marker({color:'rosybrown'})
+        var marker = new mapboxgl.Marker({color:'crimson'})
             .setLngLat([-117.9967, 42.0014])
             .setPopup(popup) 
             .addTo(map);
     
             //Oak Flat copper mine - Arizona
-        var marker2 = new mapboxgl.Marker({color:'rosybrown'})
+        var marker2 = new mapboxgl.Marker({color:'crimson'})
             .setLngLat([-111.047, 33.308])
             .setPopup(popup2)
             .addTo(map);
     
             //Stibnite gold mine - Idaho
-        var marker3 = new mapboxgl.Marker({color:'rosybrown'})
+        var marker3 = new mapboxgl.Marker({color:'crimson'})
             .setLngLat([-115.339, 44.898])
             .setPopup(popup3)
             .addTo(map);
     
             //Blue Creek Coal mine - Alabama
-        var marker4 = new mapboxgl.Marker({color:'rosybrown'})
+        var marker4 = new mapboxgl.Marker({color:'crimson'})
             .setLngLat([-87.0761, 33.3709]) 
             .setPopup(popup4)
             .addTo(map);
             
             //Smackover Lithium project - Arkansas
-        var marker5 = new mapboxgl.Marker({color:'rosybrown'})
+        var marker5 = new mapboxgl.Marker({color:'crimson'})
             .setLngLat([-92.7278, 33.3614])
             .setPopup(popup5)
             .addTo(map);
     
             //Schmid Ridge Phosphorous Mine - SE Idaho
-        var marker6 = new mapboxgl.Marker({color:'rosybrown'})
+        var marker6 = new mapboxgl.Marker({color:'crimson'})
             .setLngLat([-111.2834, 42.6114])
             .setPopup(popup6)
             .addTo(map);
         
             //Libby Exploration Project - Montana
-        var marker7 = new mapboxgl.Marker({color:'rosybrown'})
+        var marker7 = new mapboxgl.Marker({color:'crimson'})
             .setLngLat([-115.8303, 48.167])
             .setPopup(popup7)
             .addTo(map);
             
             //Lisbon Valley Copper Project - Utah
-        var marker8 = new mapboxgl.Marker({color:'rosybrown'})
+        var marker8 = new mapboxgl.Marker({color:'crimson'})
             .setLngLat([-109.2482, 38.3122])
             .setPopup(popup8)
             .addTo(map);
         
             //Silver Peak Lithium Mine 
-        var marker9 = new mapboxgl.Marker({color:'rosybrown'})
+        var marker9 = new mapboxgl.Marker({color:'crimson'})
             .setLngLat([-117.6327, 37.7567])
             .setPopup(popup9)
             .addTo(map);
     
     
             //Michigan Potash
-        var marker10 = new mapboxgl.Marker({color: 'rosybrown'})
+        var marker10 = new mapboxgl.Marker({color: 'crimson'})
             .setLngLat([-85.3431, 43.9973])
             .setPopup(popup10)
             .addTo(map);
@@ -326,14 +455,14 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
     
        document.getElementById('marker1Button').addEventListener('click', function () {
         map.jumpTo({
-            center:[-117.9967, 42.0014], 
+            center:[-117.9967, 41.7878], 
             zoom: 9
             });
         });
     
         document.getElementById('marker2Button').addEventListener('click', function () {
         map.jumpTo({
-            center:[-111.047, 33.308], 
+            center:[-111.047, 33.008], 
             zoom: 9
             });
         });
@@ -393,6 +522,8 @@ From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-
             zoom: 9
             });
         });
+        
+      
     </script>
 
 </body>
