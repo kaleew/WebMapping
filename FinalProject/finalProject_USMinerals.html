@@ -1,0 +1,794 @@
+<!-- A Versatile Layout for Full-screen Maps by Andy Cochran
+Andy Cochran 
+From https://medium.com/nyc-planning-digital/a-versatile-layout-for-full-screen-maps-229cec508b22 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>US Mineral Projects 2025</title>
+   
+
+    
+    <!-- JavaScript Libraries-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.js"></script>
+    
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+    
+ 
+    <!-- CSS Links -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css" rel="stylesheet" />
+    <link href="VersitileLayout.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+    
+    
+<style>
+    .popup-content{
+        font-family: 'Lucida Sans', sans-serif;
+        font-size: 14pt;
+        line-height: 1.5;
+        color: black;
+    }
+    
+    .popup-content h1 {
+        font-family: 'Lucida Sans', sans-serif;
+        font-size: 18pt;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: black;
+    }
+    .popup-content h2 {
+        font-family: 'Lucida Sans', sans-serif;
+        font-size: 10pt;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: black;
+    }
+    
+    .popup-content p {
+        font-size: 13pt;
+        margin: 0.5em 0;
+    }
+
+    .popup-content a {
+        color: black;
+        text-decoration: underline;
+    }
+    
+    .sidebar li {
+        list-style: none;
+        margin-bottom: 0.5rem;
+    }
+    
+    .sidebar button.fly{
+        display: block;
+        width: 100%;
+        background-color: cadetblue;
+        border: none;
+        color: aliceblue;
+        padding: 10px 15px;
+        font-size: 1rem;
+        border-radius: 5px;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        font-family: 'Lucida Sans', sans-serif;
+        
+    }
+    .sidebar button.fly:hover {
+        background-color: darkcyan;
+        
+    }
+    
+    .sidebar button.fly:active {
+        background-color: darkslategray;
+    }
+    
+    .sidebar h2 {
+        font-family: 'Lucida Sans', sans-serif; 
+        font-size: 1.25rem;
+    }
+    
+
+    
+    body {
+        background-color: #2e4f3e; 
+        color: white;
+        font-family: 'Lucida sans', sans-serif;
+    }
+    
+    .search-container {
+        background-color: #2e4f3e;
+        color: #fff;
+        padding: 1rem;
+    }
+    
+     .content {
+        background-color: #2e4f3e;
+        color: #e0e0e0;
+        padding: 1rem;
+    }
+   
+    .contentpanel h2 {
+        font-family: 'Lucida Sans', sans-serif; 
+        font-size: 2rem
+    }
+
+    .sidebar {
+        background-color: #2e4f3e;
+        color: #ffffff;
+        padding: 1rem;
+    }
+    
+    .site-header {
+        background-color: rgba(95, 158, 160, 0.9);
+        color: black;
+        font-family: 'Franklin Gothic Medium', serif; 
+        display: block; 
+        text-align: center;
+        justify-content: center;
+        height: auto;
+        padding: 0 20px;
+        z-index: 1000;
+       
+      
+        }
+    
+    
+    
+    .site-title {
+        font-size: 2rem;
+        margin: 0;
+        color: darkslategray;
+        text-shadow: 0 0 6px aqua;
+    }
+    
+    .site-subtitle {
+        font-size: 1.5rem;
+        margin: 0;
+        color: darkslategray;
+        font-style: italic;
+        
+    }
+    li:first-child a.content-link {
+        font-weight: bold;
+        color: crimson; 
+        text-decoration: underline;
+        font-size: 14pt;
+    
+        }
+    
+    .map-container {
+        position: relative; 
+        z-index:1;
+    }
+    
+    .contentpanel {
+        z-index: 9998;
+    }
+    
+    .content-close-button {
+        z-index: 9999;
+        position: absolute;
+    }
+    
+    .popup-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+    
+    .exec-order-link{
+        font-family: 'Lucida Sans', sans-serif; 
+        color: aquamarine;
+        text-decoration: underline;
+    }
+</style>
+
+    
+</head>
+
+<body>
+
+     <div class="site-header">
+        <strong class="site-title">Looming Energy and Mineral Extraction Projects in the United States</strong>
+        <p class = "site-subtitle">By: Kalee Winterbottom</p>
+            </div>
+
+   
+    <div class="site-main grid-x has-content-open">
+
+
+        
+        <div id='map' class="map-container cell medium-auto large-order-2">
+             <!--  ADD iframe here, inside the versitle layout's map container (VI.2.)   -->
+<!--            <iframe src="final_project.html" title="Map"></iframe> -->
+        
+        </div>
+        
+       
+        
+        <!--  Sidebar panel  -->
+        <div id= 'sidebar' class="sidebar cell medium-3 large-2 large-order-1 show-for-medium">
+            <h2>Projects Identified per EO 14241: "Immediate Measures to Increase American Mineral Production" (March 20,2025)</h2>
+            
+            <ul>
+            <li><a class="content-link" href="#">More Information</a></li>
+            <li> 
+                <a class = "exec-order-link" href= "https://www.whitehouse.gov/articles/2025/04/trump-administration-advances-first-wave-of-critical-mineral-production-projects/">Link to Official List from White House</a>
+                </li>
+            <li><button class='fly' id='marker1Button'>McDermitt Exploration Project</button></li>
+            <li><button class='fly' id='marker2Button'>Resolution Copper</button></li>
+            <li><button class='fly' id='marker3Button'>Stibnite Gold Mine</button></li>
+            <li><button class='fly' id='marker4Button'>Blue Creek Coal Mine</button></li>
+            <li><button class='fly' id='marker5Button'>Smackover Lithium Project</button></li>
+            <li><button class='fly' id='marker6Button'>Schmid Ridge</button></li>
+            <li><button class='fly' id='marker7Button'>Libby Exploration Project</button></li>
+            <li><button class='fly' id='marker8Button'>Lisbon Valley</button></li>
+            <li><button class='fly' id='marker9Button'>Silver Peak Lithium</button></li>
+            <li><button class='fly' id='marker10Button'>Michigan Potash</button></li>
+            </ul>
+            
+
+        </div>
+
+        <div class="content-close-button-container">
+            <a href="#" class="content-close-button">×</a>
+        </div>
+        
+        <!--  Content panel  -->
+        <div id= 'contentpanel' class="contentpanel content cell large-5 large-order-3">
+            <h2>Trump's Attack on Environmental Justice</h2>
+            <p>In the first months of Donald Trump's second presidency, he signed over 100 executive orders. Many of these are levers for dismantling the federal government in such a way that serves his personal agenda. Executive Order (EO) 14241: "Immediate Measures to Increase American Mineral Production" completely alters the approach to energy projects and mineral extraction. The purpose of the EO is to fast-track selected projects (identified by Trump's own National Energy Dominance Council). By reframing previous environmental regulations as unnecessary and burdensome, Trump's adminstration can essentially override regulatory barriers and avoid accountability for the impacts of these projects. </p>
+            <br>
+            <p>Rather than prioritizing a commitment to cleaner energy, the Trump administration is setting the industry back significantly. In addition to energy, other extractive mining projects focus on product manufacture, like lithium batteries, for example. Under the guise of creating jobs and shifting priorities from energy renewability to "reliability," this EO sacrifices the health of the environment and climate-susceptible communities in favor of "making American energy dominant" and allegedly reducing reliance on foreign nations.</p>
+            <br>
+            <p>EO 14241 threatens tribal sovereignty, especially in environmental governance and land stewardship. By bypassing much of the assessment process and denying appeals made by Tribal Nations, the National Energy Dominance Council and the federal government have effectively taken Indigenous ecological knowledge out of the equation. These projects have the potential to seriously harm ecosystem functions and populations of people, non-human animals, vegetation, and water supplies. Any small steps that had been made previously, notably by the Biden administration, are on the way to being completely undone by this and similar executive orders. </p>
+            <p>Sources: USGS, Mapbox, OpenStreetMap, United States Federal Register, The White House - Other sources linked in pop-ups</p>
+            
+        </div>
+
+    </div>
+
+   
+    <script>
+       
+        $(document).ready(function() {
+
+            $('.content-close-button').click(function() {
+                $('.content-close-button').hide();
+                $('.content').hide();
+                $('.site-main').removeClass('has-content-open')
+
+                // When the map is resized programmatically, window resize must be triggered so that the map renders in the newly allotted space.
+                window.dispatchEvent(new Event('resize'));
+
+            });
+
+            $('.content-link').click(function() {
+                $('.content-close-button').show();
+                $('.content').show();
+                $('.site-main').addClass('has-content-open')
+                window.dispatchEvent(new Event('resize'));
+            });
+            
+            
+            
+            
+            $('.content-close-button').hide();
+            $('.content').hide();
+            $('.site-main').removeClass('has-content-open')
+
+            // When the map is resized programmatically, window resize must be triggered so that the map renders in the newly allotted space.
+            window.dispatchEvent(new Event('resize'));
+
+
+        });
+
+        mapboxgl.accessToken = 'pk.eyJ1Ijoia3dpbnRlcmJvdHRvbSIsImEiOiJjbWF4MXNwaWQwbWVtMmpxMGw3aXlheGYwIn0.GMBa1uSljfVFvOmLBKV3pg'
+        
+        
+    
+    //Map Initialization 
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/satellite-streets-v12',
+            center: [-99.6033, 39.8333],
+            zoom: 3.75
+        })
+        
+        var bounds = [
+		    [-130, 22], // Southwest coordinates
+		    [-65, 52] // Northeast coordinates 
+		];
+
+		var map = new mapboxgl.Map({
+			container: 'map',
+			style: 'mapbox://styles/mapbox/satellite-streets-v12',
+			center: [-99.6033, 39.8333],
+			zoom: 3.75, // pick your own
+			maxBounds: bounds // Sets bounds from variable above
+		});
+        //Popups
+            //Mcdermitt
+        var popup_content = `
+             <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>McDermitt Exploration Project - SE Oregon</h1>
+            <img src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/media/images/SouthRimPanorama.jpg?itok=qSImsujL" 
+                alt="McDermitt Caldera, Southeast Oregon" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <h2>Source: USGS / Chris Henry, Nevada Bureau of Mines and Geology, 
+                <a href="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/media/images/SouthRimPanorama.jpg?itok=qSImsujL" target="_blank">View full image</a>
+            </h2>
+            <p> Mineral: Lithium<br>
+                Permitting Status: In progress<br> 
+                Company: HiTech Minerals, Inc.<br> 
+                Overview:<br>
+                More Information:<br> 
+                  <ul>
+                <li>
+            <a href="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/mcdermitt-exploration-project" target="_blank">
+                Federal Permitting Dashboard
+            </a>
+            </li>
+            <li>
+            <a href="https://www.opb.org/article/2025/04/01/lithium-project-in-southeastern-oregon-gets-public-input-extension/" target="_blank">
+            OPB Article on Public Input Extension
+            </a>
+        </li>
+            <li>
+            <a href="https://www.sierraclub.org/oregon/blog/2025/04/sierra-club-oregon-statement-mcdermitt-caldera-lithium-mining" target="_blank">
+                Sierra Club Statement
+        </ul>
+            </p>
+        </div>
+        `;
+              
+        var popup = new mapboxgl.Popup({
+            maxWidth: '400px',
+            offset: [0, 35]
+            })
+            .setHTML(popup_content);
+        
+        
+            // Oak Flat
+        var popup2_content = `
+             <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>Resolution Copper - Oak Flat, Arizona</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/EliasButler-OakFlat-2021.jpg/1200px-EliasButler-OakFlat-2021.jpg?20210118182302" 
+                alt="Oak Flat, Arizona" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <h2>Source: Wikipedia / Elias Butler, 
+                <a href="https://commons.wikimedia.org/wiki/File:EliasButler-OakFlat-2021.jpg" target="_blank">View license</a>
+            </h2>
+            <p> Mineral: Copper<br>
+            Permitting Status: In Progress<br>
+            Company: Rio Tinto, BHP<br>
+            Overview:<br>
+            More Information:<br>
+                <ul>
+                <li>
+              <a href="https://insideclimatenews.org/news/18042025/oak-flat-western-apache-resolution-copper-mine/" target="_blank">Inside Climate News Article: Oak Flat is Sacred to Western Apache...<a/>
+                </li>
+                <li>
+            <a href ="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/resolution-copper-project" target ="_blank">Federal Permitting Dashboard<a/>
+                </li>
+                <li>
+            <a href= "https://azmirror.com/2025/05/27/supreme-court-refuses-apache-plea-to-save-oak-flat-from-copper-mining-destruction/"; target = "_blank">AZ Mirror: Supreme Court Refusal of Apache Appeal<a/>
+            </li>
+            </ul>
+        </div>
+        `;
+        
+        var popup2 = new mapboxgl.Popup({maxWidth: '400px'})
+            .setHTML(popup2_content);
+           
+            //Stibnite Gold Mine
+        var popup3_content = `
+             <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>Stibnite Gold Mine - Idaho</h1>
+            <img src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/Glory_Hole.jpg?itok=wmgduA-a" 
+                alt="Stibnite Mining District, Idaho" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <h2>Source: USGS , 
+                <a href="https://www.usgs.gov/media/images/water-quality-study-historical-idaho-mining-district-1" target="_blank">View full image</a>
+            </h2>
+            <p> Mineral: Gold<br>
+                Permitting Status: Approval Stage<br>
+                Company: Perpetua Resources<br>
+                More Information:<br>
+                    <ul>
+                    <li>
+                        <a href="Idaho Rivers United" target="_blank">Idaho Rivers United<a/>
+                    </li>
+                    <li>
+                        <a href="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/stibnite-gold-project" target="_blank">Federal Permitting Dashboard<a/>
+                    </li>
+                    <li>
+                        <a href="https://idahocapitalsun.com/2025/01/07/u-s-forest-service-approves-stibnite-gold-mine-in-central-idaho/" target="_blank">Idaho Capital Sun: Forest Service Decision<a/>
+                    </li>
+                    </ul>
+        </div>
+        `;
+        var popup3 = new mapboxgl.Popup({maxWidth: '400px'})
+            .setHTML(popup3_content);
+        
+            //Blue Creek Coal Mine
+        var popup4_content = `
+            <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>Blue Creek Coal Mine - Alabama</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Lketuscal_tal.png?20110313011502" 
+                alt="Lake Tuscaloosca" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <h2>Source: Wikipedia / User: RollTide13, 
+                <a href="https://www.usgs.gov/media/images/water-quality-study-historical-idaho-mining-district-1" target="_blank">View full image</a>
+            </h2>
+            <p>Mineral: Coal<br>
+            Permitting Status: In progress<br>
+            Company: Warrior Met<br>
+            More Information:<br>
+                <ul>
+                <li>
+                    <a href="https://insideclimatenews.org/news/21102024/alabama-mine-expansion-private-extraction-publicly-owned-coal/" target="_blank">Inside Climate News</a>
+                </li>
+                <li>
+                    <a href ="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/warrior-met-coal-mines" target="_blank">Federal Permitting Dashboard<a/>
+                </li>
+                </ul>
+        </div>
+        `;
+            
+        var popup4 = new mapboxgl.Popup({maxWidth: '400px'})
+            .setHTML(popup4_content);
+       
+                
+            //Smackover Lithium Project - Arkansas
+        var popup5_content = `
+             <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>Southwest Arkansas Project - Smackover Lithium</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Limetal.JPG/1200px-Limetal.JPG?20111220125403" 
+                alt="Lithium" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <h2>Source: Wikipedia / User: Dnn87 , 
+                <a href="https://commons.wikimedia.org/wiki/File:Limetal.JPG">View license</a>
+            </h2>
+            <p>Mineral: Lithium <br>
+            Permitting Status: In Progress<br>
+            Company: Standard Lithium<br>
+            More Information:<br>
+                <ul>
+                <li>
+                    <a href="https://e360.yale.edu/features/arkansas-direct-lithium-extraction" target="_blank">Yale School of the Environment</a>
+                </li>
+                <li>
+                    <a href ="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/south-west-arkansas-project" target="_blank">Federal Permitting Dashboard<a/>
+                </li>
+                </ul>
+        </div>
+        `;
+            
+        var popup5 = new mapboxgl.Popup({maxWidth: '400px'})
+            .setHTML(popup5_content);
+        
+            //Schmid Ridge Phosphorous Mine - SE Idaho
+        var popup6_content = `
+             <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>Caldwell Canyon Mine Project - SE Idaho</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/TaylorMountain_BlackfootRange.jpg/1200px-TaylorMountain_BlackfootRange.jpg?20080703043929" 
+                alt="Blackfoot Mountains, Bingham County, Idaho" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <h2>Source: Wikipedia / Zechariah Judy, 
+                <a href="https://commons.wikimedia.org/wiki/File:TaylorMountain_BlackfootRange.jpg">View license</a>
+            </h2>
+             <p>Mineral: Phosphorous <br>
+            Permitting Status: In Progress<br>
+            Company: Bayer<br>
+            More Information:<br>
+                <ul>
+                <li>
+                    <a href="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/caldwell-canyon-mine-project" target="_blank">Federal Permitting Dashboard</a>
+                </li>
+                <li>
+                    <a href ="https://biologicaldiversity.org/w/news/press-releases/millions-of-dollars-to-benefit-sage-grouse-other-wildlife-delivered-by-caldwell-canyon-mine-agreement-2024-09-16/" target="_blank">Center for Biological Diversity<a/>
+                </li>
+                </ul>
+        </div>
+        `;
+        
+        var popup6 = new mapboxgl.Popup({maxWidth: '400px'})
+            .setHTML(popup6_content);
+
+            // Libby Exploration Project 
+        var popup7_content = `
+             <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>Libby Exploration Project - NW Montana</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Leigh_Lake_-_Snowshoe_Peak.jpg/960px-Leigh_Lake_-_Snowshoe_Peak.jpg?20200123091237" 
+                alt="Snowshoe Peak - tallest peak in the Cabinet Mountains wilderness" 
+                style="width: 100%; height: 200px; margin-top: 10px;" />
+            <h2>Source: English Wikipedia / Kataiklaeya , 
+                <a href="https://commons.wikimedia.org/wiki/File:Leigh_Lake_-_Snowshoe_Peak.jpg" target="_blank">View license</a>
+            </h2>
+             <p>Mineral: Silver and Copper <br>
+            Permitting Status: In Progress<br>
+            Company: Hecla Mining Company<br>
+            More Information:<br>
+                <ul>
+                <li>
+                    <a href="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/libby-exploration-project" target="_blank">Federal Permitting Dashboard</a>
+                </li>
+                <li>
+                    <a href ="https://meic.org/protect-the-cabinet-mountains/" target="_blank">Montana Environmental Information Center<a/>
+                </li>
+                </ul>
+        </div>
+        `;
+            
+        var popup7 = new mapboxgl.Popup({maxWidth:'400px'})
+            .setHTML(popup7_content);
+        
+            //Lisbon valley copper project
+        var popup8_content = `
+             <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>Lisbon Valley Copper Project - Utah</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Shinarump_Mine_Waste_Rock.jpg/1200px-Shinarump_Mine_Waste_Rock.jpg?20200317232952" 
+                alt="Mining waste dump near Moab, Utah" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <h2>Source: Wikipedia / User: Forade , 
+                <a href="https://commons.wikimedia.org/wiki/File:Shinarump_Mine_Waste_Rock.jpg" target="_blank">View license</a>
+            </h2>
+             <p>Mineral: Copper<br>
+            Permitting Status: In Progress<br>
+            Company: Lisbon Valley Mining Company<br>
+            More Information:<br>
+                <ul>
+                <li>
+                    <a href="https://scribenet.response.epa.gov/site/site_profile.aspx?site_id=14705" target="_blank">Environmental Protection Agency Site Overview</a>
+                </li>
+                <li>
+                    <a href ="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/lisbon-valley-copper-project" target="_blank">Federal Permitting Dashboard<a/>
+                </li>
+                </ul>
+        </div>
+        `;
+            
+        var popup8 = new mapboxgl.Popup({maxWidth: '400px'})
+            .setHTML(popup8_content);
+        
+            //Silver Peak Lithium Mine
+        var popup9_content = `
+             <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>Silver Peak Lithium Mine - Nevada</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Chemetall_Foote_Lithium_Operation.jpg/1200px-Chemetall_Foote_Lithium_Operation.jpg?20101013004246" 
+                alt="Lithium mining operations - Silver Peak, Nevada" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <h2>Source: Wikipedia / Doc Searls , 
+                <a href="https://commons.wikimedia.org/wiki/File:Chemetall_Foote_Lithium_Operation.jpg" target="_blank">View license</a>
+            </h2>
+             <p>Mineral: Lithium <br>
+            Permitting Status: In Progress<br>
+            Company: Albemarle<br>
+            More Information:<br>
+                <ul>
+                <li>
+                    <a href="https://insideclimatenews.org/news/08042024/nevada-great-basin-lithium-fight-over-water/" target="_blank">Inside Climate News: The Fight For Water</a>
+                </li>
+                <li>
+                    <a href ="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/silver-peak-lithium-mine" target="_blank">Federal Permitting Dashboard<a/>
+                </li>
+                </ul>
+        </div>
+        `;
+            
+        var popup9 = new mapboxgl.Popup({maxWidth: '400px'})
+            .setHTML(popup9_content);
+        
+            //Michigan Potash
+        var popup10_content = `
+            <div class="popup-scroll">
+            <div class="popup-content">
+            <h1>Michigan Potash</h1>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/PotashUSGOV.jpg?20051002043045" 
+                alt="Processed potash with a US penny for size and color reference" 
+                style="width: 100%; height: auto; margin-top: 10px;" />
+            <h2>Source: Wikipedia /USGS, Public Domain 
+                <a href="https://commons.wikimedia.org/wiki/File:PotashUSGOV.jpg="_blank">View info</a>
+            </h2>
+             <p>Mineral: Potash<br>
+            Permitting Status: In Progress<br>
+            Company: Michigan Potash & Salt Company<br>
+            More Information:<br>
+                <ul>
+                <li>
+                    <a href="https://michiganpotash.com/" target="_blank">Michigan Potash & Salt Company</a>
+                </li>
+                <li>
+                    <a href ="https://www.permits.performance.gov/permitting-project/fast-41-transparency-projects/michigan-potash" target="_blank">Federal Permitting Dashboard<a/>
+                </li>
+                </ul>
+        </div>
+        `;
+            
+        var popup10 = new mapboxgl.Popup({maxWidth: '400px'})
+            .setHTML(popup10_content);
+        
+        //Markers
+        
+            //McDermitt Exploration Project - Oregon
+        var marker = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-117.9967, 42.0014])
+            .setPopup(popup) 
+            .addTo(map);
+        
+        marker.getElement().style.cursor = 'pointer';
+    
+       
+            //Oak Flat copper mine - Arizona
+        var marker2 = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-111.047, 33.308])
+            .setPopup(popup2)
+            .addTo(map);
+    
+        marker2.getElement().style.cursor = 'pointer';
+        
+            //Stibnite gold mine - Idaho
+        var marker3 = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-115.339, 44.898])
+            .setPopup(popup3)
+            .addTo(map);
+        
+        marker3.getElement().style.cursor = 'pointer';
+    
+            //Blue Creek Coal mine - Alabama
+        var marker4 = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-87.0761, 33.3709]) 
+            .setPopup(popup4)
+            .addTo(map);
+        
+        marker4.getElement().style.cursor = 'pointer';
+            
+            //Smackover Lithium project - Arkansas
+        var marker5 = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-92.7278, 33.3614])
+            .setPopup(popup5)
+            .addTo(map);
+        
+        marker5.getElement().style.cursor = 'pointer';
+    
+            //Schmid Ridge Phosphorous Mine - SE Idaho
+        var marker6 = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-111.2834, 42.6114])
+            .setPopup(popup6)
+            .addTo(map);
+        
+        marker6.getElement().style.cursor = 'pointer';
+        
+            //Libby Exploration Project - Montana
+        var marker7 = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-115.8303, 48.167])
+            .setPopup(popup7)
+            .addTo(map);
+        
+        marker7.getElement().style.cursor = 'pointer';
+            
+            //Lisbon Valley Copper Project - Utah
+        var marker8 = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-109.2482, 38.3122])
+            .setPopup(popup8)
+            .addTo(map);
+        
+        marker8.getElement().style.cursor = 'pointer';
+        
+            //Silver Peak Lithium Mine 
+        var marker9 = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-117.6327, 37.7567])
+            .setPopup(popup9)
+            .addTo(map);
+        
+        marker9.getElement().style.cursor = 'pointer';
+    
+    
+            //Michigan Potash
+        var marker10 = new mapboxgl.Marker({color: 'crimson'})
+            .setLngLat([-85.3431, 43.9973])
+            .setPopup(popup10)
+            .addTo(map);
+        
+        marker10.getElement().style.cursor = 'pointer';
+        
+        
+    
+       document.getElementById('marker1Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-117.9967, 41.7878], 
+            zoom: 9
+            });
+        });
+    
+        document.getElementById('marker2Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-111.047, 33.008], 
+            zoom: 9
+            });
+        });
+    
+         document.getElementById('marker3Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-115.339, 44.898], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker4Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-87.0761, 33.3709], 
+            zoom: 9
+            });
+             
+             var marker4 = new mapboxgl.Marker({color:'crimson'})
+            .setLngLat([-87.0761, 33.3709]) 
+            .setPopup(popup4)
+            .addTo(map);
+        
+          
+        });
+        
+         document.getElementById('marker5Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-92.7278, 33.3614], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker6Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-111.2834, 42.6114], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker7Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-115.8303, 48.167], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker8Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-109.2482, 38.3122], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker9Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-117.6327, 37.7567], 
+            zoom: 9
+            });
+        });
+        
+         document.getElementById('marker10Button').addEventListener('click', function () {
+        map.jumpTo({
+            center:[-85.3431, 43.9973], 
+            zoom: 9
+            });
+        });
+        
+      
+    </script>
+
+</body>
+
+</html>
